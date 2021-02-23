@@ -1,48 +1,54 @@
 #include <stdio.h>
 
-int main() {
+int main()
+{
 
-	int value, pos, i, arrSize;
+    int value, pos, i, arrSize;
 
-	printf("Insert array size: \n");
-	scanf("%d", &arrSize);
+    printf("Insert array size: \n");
+    scanf("%d", &arrSize);
 
-	int arr[arrSize];
-	
-	for(i = 0; i < arrSize; ++i) {
-		printf("Value to insert to array in position %d!\n", 1 + i);
-		scanf("%d", &arr[i]);
-	
-	}
+    int arr[arrSize];
 
-	printf("\nYour array is: \n");
-	for(i = 0; i < arrSize; ++i) {
-		printf("%d ", arr[i]);
-	}
+    for (i = 0; i < arrSize; ++i)
+    {
+        printf("Value to insert to array in position %d!\n", 1 + i);
+        scanf("%d", &arr[i]);
+    }
 
-	printf("\n\nInsert position to insert new value!\n");
-	scanf("%d", &pos);
+    printf("\nYour array is: \n");
+    for (i = 0; i < arrSize; ++i)
+    {
+        printf("%d ", arr[i]);
+    }
 
-	if(pos > arrSize || pos < 0) {
-		printf("Position value is not valid!\n");
-		return 1;
-	}
+    printf("\n\nInsert position to insert new value!\n");
+    scanf("%d", &pos);
 
-	printf("Insert new value!\n");
-	scanf("%d", &value);
-	
-	for(i = 0; i < arrSize; ++i) {
-		if(i == (pos - 1)) {
-			arr[i] = value;
-			break;
-		}
-	}
+    if (pos > arrSize || pos < 0)
+    {
+        printf("Position value is not valid!\n");
+        return 1;
+    }
 
-	printf("\nYour new array is: \n");
-	for(i = 0; i < arrSize; ++i) {
-		printf("%d ", arr[i]);
-	}
-	printf("\n");
+    printf("Insert new value!\n");
+    scanf("%d", &value);
 
-	return 0;
+    for (i = 0; i < arrSize; ++i)
+    {
+        if (i == (pos - 1))
+        {
+            arr[i] = value;
+            break;
+        }
+    }
+
+    printf("\nYour new array is: \n");
+    for (i = 0; i < arrSize; ++i)
+    {
+        printf("%d ", arr[i]);
+    }
+    printf("\n");
+
+    return 0;
 }
