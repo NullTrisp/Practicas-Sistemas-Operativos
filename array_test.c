@@ -34,12 +34,12 @@ int main()
     printf("Insert new value!\n");
     scanf("%d", &value);
 
-    for(i=arrSize; i>=pos; i--)
-        {
-            arr[i] = arr[i-1];
-        }
-        
-        arr[pos-1] = value;
+    for (i = arrSize; i >= pos; i--)
+    {
+        arr[i] = arr[i - 1];
+    }
+
+    arr[pos - 1] = value;
 
     printf("\nYour new array is: \n");
     for (i = 0; i < arrSize + 1; ++i)
