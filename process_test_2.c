@@ -20,7 +20,6 @@ int main()
 				printf("%c\n", aux - 32);
 			}
 		}
-			
 	}
 	else
 	{ //sonA of father prints next char
