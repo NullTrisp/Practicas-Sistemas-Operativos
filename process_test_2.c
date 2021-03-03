@@ -12,7 +12,6 @@ int main()
 
 	if (sonA > 0)
 	{ //father
-
 		sonB = fork();
 		if (sonB == 0)
 		{ //sonB of father prints uppercase letter
@@ -21,12 +20,11 @@ int main()
 				printf("%c\n", aux - 32);
 			}
 		}
-		while (wait(NULL))
-			;
+			
 	}
 	else
 	{ //sonA of father prints next char
-		if (aux > 122)
+		if (aux > 121)
 		{
 			puts("a");
 		}
