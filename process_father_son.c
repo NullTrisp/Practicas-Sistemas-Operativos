@@ -11,7 +11,8 @@ int main()
     if (son > 0) //proceso padre
     {
         puts("I'm the father and I wait");
-        wait(NULL); //waits for the child process to die
+        wait(NULL); //waits for the child process to die one son
+        //while (wait(NULL) > 0) //waits for the child process to die all sons
     }
     else if (son == 0)
     {
