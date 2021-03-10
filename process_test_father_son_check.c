@@ -24,6 +24,7 @@ int main()
 	}
 	else if (sonA == 0 && sonB != 0)
 	{ //sonA of father prints next char
+		sleep(1);
 		printf("%c\n", aux + 1);
 		printf("afeg");
 	}
