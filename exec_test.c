@@ -1,37 +1,38 @@
 #include <stdio.h>
+
 #include <unistd.h>
+
 #include <sys/types.h>
+
 #include <wait.h>
 
-int main(int argc, char const *argv[])
-{
+int main(int argc, char
+    const * argv[]) {
     int exit = 0;
 
     char option;
 
-    while (exit == 0)
-    {
-        pid_t pid = fork();
-        puts("Select an option\n[w] ---> ls command\n[a] ---> ps command\n[s] ---> exit\n");
-        scanf("%c", &option);
+    puts("Select an option\n[w] ---> ls command\n[a] ---> ps command\n[s] ---> exit\n");
+    while (exit == 0) {
+        option = getchar();
 
-        switch (option)
-        {
-        case 'w':
-            puts("ls!");
-            fork();
-            execlp("/bin/ls", "ls", NULL);
-            break;
-        case 'a':
-            puts("ps!");
-            break;
-        case 's':
-            puts("Bye :D!");
-            exit = 1;
-            break;
-        default:
-            puts("Select a valid option!\n");
-            break;
+        if (fork() > 0) {
+            if (option == 'w') {
+                puts("ls!");
+            } else if (option == 'a') {
+                puts("ps!");
+            } else if (option == 's') {
+                exit = 1;
+            }
+        } else {
+            sleep(1);
+            if (option == 'w') {
+                execlp("/bin/ls", "ls", NULL);
+            } else if (option == 'a') {
+                execlp("/bin/ps", "ps", NULL);
+            } else if (option == 's') {
+                exit = 1;
+            }
         }
     }
 
