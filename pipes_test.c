@@ -14,7 +14,7 @@ int main(int argc, char const *argv[])
 
     pid_t pid;
 
-    if (pipe(pipelineA) < 0 || pipe(pipelineB)) //error case in pipes
+    if (pipe(pipelineA) < 0 || pipe(pipelineB) < 0) //error case in pipes
     {
         perror("Error creating pipe");
         return -1;
