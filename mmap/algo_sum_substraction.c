@@ -32,7 +32,8 @@ int main(int argc, char const *argv[])
         {
             while (wait(NULL) > 0)
                 ;
-            printf("\n%d\n", *shared_var);
+            printf("\nFinal result: %d\n", *shared_var);
+            munmap(shared_var, sizeof *shared_var); //destroys shared var
             exit(0);
         }
     }

@@ -23,7 +23,7 @@ int main(int argc, char const *argv[])
 
         while (*aux == 1)
         {
-            usleep(20);
+            usleep(20); //miliseconds better performance
         }
 
         puts("Process read dies!");
@@ -37,7 +37,7 @@ int main(int argc, char const *argv[])
         {
             while (*aux == 0)
             {
-                usleep(20);
+                usleep(20); //miliseconds better performance
             }
 
             printf("User input: %d\n", *a);
@@ -48,6 +48,8 @@ int main(int argc, char const *argv[])
 
         wait(NULL);
         puts("I'm the father and i'll die!\n");
+        munmap(a, sizeof *a);
+        munmap(aux, sizeof *aux);
         exit(0);
     }
 
