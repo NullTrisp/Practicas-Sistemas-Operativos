@@ -5,6 +5,11 @@
         "unistd.h": "c",
         "stdlib.h": "c",
         "mman.h": "c",
-        "types.h": "c"
+        "types.h": "c",
+        "semaphore.h": "c",
+        "fcntl.h": "c",
+        "wordsize.h": "c",
+        "struct_timespec.h": "c",
+        "pthread.h": "c"
     }
 }
