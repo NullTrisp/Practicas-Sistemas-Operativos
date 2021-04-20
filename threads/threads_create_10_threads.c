@@ -2,9 +2,10 @@
 #include <unistd.h>
 #include <stdio.h>
 
-#define LIMIT 5
+#define LIMIT 10
 
 pthread_t threads[LIMIT];
+int aux;
 
 void *print_thread(void *args);
 
@@ -16,10 +17,8 @@ int main(int argc, char const *argv[])
         sleep(1);
     }
     
-    for (int i = 0; i < LIMIT; i++)
-    {
-        pthread_join(threads[i], NULL);
-    }
+    pthread_join(threads[0], NULL);
+
 
     return 0;
 }
@@ -31,7 +30,8 @@ void *print_thread(void *args)
     if(index < LIMIT - 1) {
         sleep(2);
         pthread_join(threads[index + 1], NULL);
+    } else {
+        scanf("%d\n", &aux);
     }
-    sleep(1);
     printf("El hilo %d con ID %u finaliza\n", index + 1, (unsigned int)pthread_self());
 }
