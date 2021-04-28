@@ -1,102 +1,140 @@
+#include <stdio.h>
 #include <stdlib.h>
+#include <unistd.h>
+#include <pthread.h>
 
 #define MILLON 1000000
-#define ARRAYSIZE 6
-#define PAR 2
+#define ARRAYSIZE 5
+#define PAR 0
 #define IMPAR 1
-#define TRUE 1
-#define FALSE 0
 
-void *paresFun();
-void *imparesFun();
-void *masterFun();
-unsigned int aleatorio_intervalo();
+int arr[ARRAYSIZE], i = 0, FLAG_EXIT = 1, FLAG_PARIDAD = -1, counter = 0;
 
-pthread_t pares, impares, master;
+pthread_t pares_t, impares_t, master_t;
 pthread_mutex_t lock;
 
-int arr[ARRAYSIZE], flag, index, exit_flag = FALSE;
+void *pares_f(void *parm);
+void *impares_f(void *parm);
+void *master_f(void *parm);
 
-int main(int argc, char const *argv[])
+unsigned int aleatorio_intervalo(unsigned int min, unsigned int max);
+
+int main()
 {
-    srand(time(NULL));
-
     pthread_mutex_init(&lock, NULL);
 
-    pthread_create(&master, NULL, &masterFun, NULL);
-    pthread_create(&pares, NULL, &paresFun, NULL);
-    pthread_create(&impares, NULL, &imparesFun, NULL);
+    pthread_create(&master_t, NULL, master_f, NULL);
+    pthread_create(&pares_t, NULL, pares_f, NULL);
+    pthread_create(&impares_t, NULL, impares_f, NULL);
 
-    pthread_join(master, NULL);
-    pthread_join(pares, NULL);
-    pthread_join(impares, NULL);
+    pthread_join(pares_t, NULL);
+    pthread_join(impares_t, NULL);
+    pthread_join(master_t, NULL);
 
-    for (int i = 0; i < ARRAYSIZE; i++)
-    {
-        printf("%d: %d ", i, arr[i]);
-    }
-    printf("\n");
+    printf("\ncounter: %d\n", counter);
 
     pthread_mutex_destroy(&lock);
 
     return 0;
 }
 
-void *masterFun()
+void *master_f(void *parm)
 {
-    for (int i = 0; i < ARRAYSIZE; i++)
+    while (i < ARRAYSIZE)
     {
-        index = i;
-        if ((i % 2) == 0)
+
+        FLAG_PARIDAD = i % 2;
+        usleep(10000);
+
+        pthread_mutex_lock(&lock);
+        i = i + 1;
+        pthread_mutex_unlock(&lock);
+    }
+
+    i = 0;
+
+    FLAG_EXIT = 0;
+}
+
+void *pares_f(void *parm)
+{
+    while (FLAG_EXIT)
+    {
+        while (FLAG_EXIT && FLAG_PARIDAD == IMPAR)
         {
-            flag = PAR;
+            usleep(10);
+        }
+
+        pthread_mutex_lock(&lock);
+        int par;
+        do
+        {
+            par = aleatorio_intervalo(2, MILLON);
+        } while (par % 2 == IMPAR);
+
+        arr[i] = par;
+        pthread_mutex_unlock(&lock);
+    }
+
+    while (i < ARRAYSIZE)
+    {
+        if ((i % 2) == PAR)
+        {
+            pthread_mutex_lock(&lock);
+            if (arr[i] < 100000)
+            {
+                counter = counter + 1;
+            }
+            printf("%d: %d ", i, arr[i]);
+            i = i + 1;
+            pthread_mutex_unlock(&lock);
         }
         else
         {
-            flag = IMPAR;
+            usleep(10000);
         }
-        usleep(10000);
     }
-    exit_flag = TRUE;
-};
+}
 
-void *paresFun()
+void *impares_f(void *parm)
 {
-    while (!exit_flag)
+    while (FLAG_EXIT)
     {
-        while (flag != PAR && !exit_flag)
+        while (FLAG_EXIT && FLAG_PARIDAD == PAR)
         {
-            usleep(1);
+            usleep(10);
         }
-        pthread_mutex_lock(&lock);
-        int par = aleatorio_intervalo(2, MILLON);
-        while ((par % 2) != 0)
-        {
-            par = aleatorio_intervalo(2, MILLON);
-        }
-        arr[index] = par;
-        pthread_mutex_unlock(&lock);
-    }
-};
 
-void *imparesFun()
-{
-    while (!exit_flag)
-    {
-        while (flag != IMPAR && !exit_flag)
-        {
-            usleep(1);
-        }
         pthread_mutex_lock(&lock);
-        int impar = aleatorio_intervalo(1, MILLON);
-        while ((impar % 2) != 1)
+        int impar;
+        do
         {
             impar = aleatorio_intervalo(1, MILLON);
-        }
-        arr[index] = impar;
+        } while (impar % 2 == PAR);
+
+        arr[i] = impar;
         pthread_mutex_unlock(&lock);
     }
-};
+
+    while (i < ARRAYSIZE)
+    {
+        if ((i % 2) == IMPAR)
+        {
+            pthread_mutex_lock(&lock);
+            if (arr[i] < 100000)
+            {
+                counter = counter + 1;
+            }
+            printf("%d: %d ", i, arr[i]);
+            i = i + 1;
+            pthread_mutex_unlock(&lock);
+        }
+        else
+        {
+            usleep(10000);
+        }
+    }
+}
 
 unsigned int aleatorio_intervalo(unsigned int min, unsigned int max)
 {
@@ -108,5 +146,6 @@ unsigned int aleatorio_intervalo(unsigned int min, unsigned int max)
     {
         r = rand();
     } while (r >= limite);
+
     return min + (r / trozos);
 }
