@@ -1,0 +1,37 @@
+#include <pthread.h>
+#include <unistd.h>
+#include <stdio.h>
+
+#define LIMIT 10
+
+pthread_t threads[LIMIT];
+int aux = 0, scan;
+
+void *print_thread(void *args);
+
+int main(int argc, char const *argv[])
+{
+    pthread_create(&threads[aux], NULL, &print_thread, NULL);
+
+    pthread_join(threads[0], NULL); //espera al primer hilo que es el ultimo en morir
+
+    return 0;
+}
+
+void *print_thread(void *args)
+{
+    aux = aux + 1;
+    int index = aux;
+    printf("He nacido. Soy el hilo %d con ID %u\n", aux, (unsigned int)pthread_self());
+
+    if (index < LIMIT - 1)
+    {
+        pthread_create(&threads[aux], NULL, &print_thread, NULL);
+        pthread_join(threads[aux], NULL);
+    }
+    else
+    {
+        scanf("%d\n", &scan); //el ultimo hilo espera entrada del usuario
+    }
+    printf("El hilo %d con ID %u finaliza\n", index, (unsigned int)pthread_self());
+}
