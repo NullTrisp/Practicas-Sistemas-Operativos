@@ -4,7 +4,7 @@
 #include <pthread.h>
 
 #define MILLON 1000000
-#define ARRAYSIZE 5
+#define ARRAYSIZE 1000
 #define PAR 0
 #define IMPAR 1
 
