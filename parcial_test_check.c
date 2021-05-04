@@ -14,7 +14,7 @@ Write your code in this editor and press "Run" button to compile and execute it.
 
 
 #define MILLON 1000000
-#define LIMIT 5
+#define LIMIT 1000
 
 pthread_t master_t, pares_t, impares_t;
 pthread_mutex_t lock;
@@ -72,11 +72,11 @@ void *master_f()
     FLAG_EXIT = 0;
     FLAG_IMPAR = 1;
     FLAG_PAR = 1;
-    usleep(10);
+    //sleep(1);
     
     while(FLAG_IMPAR == 1 || FLAG_PAR == 1)
     {
-        usleep(10);
+        usleep(100);
     }
     
     printf("\ncounter: %d\n", counter);
