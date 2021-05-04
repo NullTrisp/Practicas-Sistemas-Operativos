@@ -11,10 +11,11 @@ Write your code in this editor and press "Run" button to compile and execute it.
 #include <pthread.h>
 #include<time.h>
 #include <stdlib.h>
+#include <unistd.h>
 
 
 #define MILLON 1000000
-#define LIMIT 1000
+#define LIMIT 10
 
 pthread_t master_t, pares_t, impares_t;
 pthread_mutex_t lock;
@@ -22,12 +23,12 @@ pthread_mutex_t lock;
 void *master_f();
 void *pares_f();
 void *impares_f();
-unsigned int aleatorio_intervalo(unsigned int min, unsigned int max);
+unsigned int aleatorio_intervalo();
 
 int arr[LIMIT], i = 0, FLAG_EXIT = -1, FLAG_MAIN = 1, FLAG_PAR = 0, FLAG_IMPAR = 0, counter = 0;
 
 
-int main()
+int main(int argc, char *argv[])
 {
     srand(time(NULL));
     pthread_mutex_init(&lock, NULL);
@@ -72,12 +73,7 @@ void *master_f()
     FLAG_EXIT = 0;
     FLAG_IMPAR = 1;
     FLAG_PAR = 1;
-    //sleep(1);
-    
-    while(FLAG_IMPAR == 1 || FLAG_PAR == 1)
-    {
-        usleep(100);
-    }
+    sleep(1);
     
     printf("\ncounter: %d\n", counter);
     
@@ -92,7 +88,7 @@ void *pares_f()
         {
             usleep(10);
         }
-        int par;
+        unsigned int par;
         do
         {
             par = aleatorio_intervalo(2, MILLON);
@@ -111,14 +107,8 @@ void *pares_f()
                 counter = counter + 1;
                 pthread_mutex_unlock(&lock);
             }
-            printf("i: %d par: %d\n", j, arr[j]);
+            printf("i: %d par: %u\n", j, arr[j]);
         }
-    }
-    
-    FLAG_PAR = 0;
-    while(FLAG_IMPAR == 1)
-    {
-        usleep(10);
     }
     
     return NULL;
@@ -132,7 +122,7 @@ void *impares_f()
         {
             usleep(10);
         }
-        int impar;
+        unsigned int impar;
         do
         {
             impar = aleatorio_intervalo(1, MILLON);
@@ -152,14 +142,8 @@ void *impares_f()
                 counter = counter + 1;
                 pthread_mutex_unlock(&lock);
             }
-            printf("i: %d impar: %d\n", k, arr[k]);
+            printf("i: %d impar: %u\n", k, arr[k]);
         }
-    }
-    
-    FLAG_IMPAR = 0;
-    while(FLAG_PAR == 1)
-    {
-        usleep(10);
     }
     
     return NULL;
